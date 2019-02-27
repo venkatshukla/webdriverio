@@ -60,7 +60,6 @@ export let hasWdioSyncSupport = false
 try {
     // eslint-disable-next-line import/no-unresolved
     const wdioSync = require('@wdio/sync')
-    log.debug('@wdio/sync found, running tests synchronous')
 
     hasWdioSyncSupport = true
     runFnInFiberContext = wdioSync.runFnInFiberContext
@@ -68,5 +67,5 @@ try {
     wrapCommand = wdioSync.wrapCommand
     executeHooksWithArgs = wdioSync.executeHooksWithArgs
 } catch (e) {
-    log.debug('@wdio/sync not found, running tests asynchronous')
+    // do nothing
 }

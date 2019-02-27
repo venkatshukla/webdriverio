@@ -49,6 +49,7 @@
     "lodash.flattendeep": "^4.4.0",
     "lodash.pickby": "^4.6.0",
     "lodash.union": "^4.6.0",
+    "log-update": "^2.3.0",
     "webdriverio": "^5.6.2",
     "yargs": "^11.1.0",
     "yarn-install": "^1.0.0"
