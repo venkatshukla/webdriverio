@@ -1,5 +1,5 @@
-const DEFAULT_TIMEOUT = 30000
-const DEFAULT_OPTS = {
+export const DEFAULT_TIMEOUT = 30000
+export const DEFAULT_OPTS = {
     backtrace: false, // <boolean> show full backtrace for errors
     compiler: [], // <string[]> ("extension:module") require files with the given EXTENSION after requiring MODULE (repeatable)
     failAmbiguousDefinitions: false, // <boolean> treat ambiguous definitions as errors
@@ -17,21 +17,3 @@ const DEFAULT_OPTS = {
     tagsInTitle: false, // <boolean> add cucumber tags to feature or scenario name
     timeout: DEFAULT_TIMEOUT // <number> timeout for step definitions in milliseconds
 }
-
-
-/**
- * to map Mocha events to WDIO events
- */
-export const EVENTS = {
-    'suite': 'suite:start',
-    'suite end': 'suite:end',
-    'test': 'test:start',
-    'test end': 'test:end',
-    'hook': 'hook:start',
-    'hook end': 'hook:end',
-    'pass': 'test:pass',
-    'fail': 'test:fail',
-    'pending': 'test:pending'
-}
-
-export const NOOP = /* istanbul ignore next */ function () {}

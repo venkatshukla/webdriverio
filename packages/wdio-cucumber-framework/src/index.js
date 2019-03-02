@@ -1,4 +1,5 @@
 import * as Cucumber from 'cucumber'
+import logger from '@wdio/logger'
 import mockery from 'mockery'
 import isGlob from 'is-glob'
 import glob from 'glob'
@@ -8,7 +9,7 @@ import CucumberReporter from './reporter'
 import HookRunner from './hookRunner'
 import { EventEmitter } from 'events'
 
-const log = logger('@wdio/mocha-framework')
+const log = logger('@wdio/cucumber-framework')
 import { runTestInFiberContext, executeHooksWithArgs } from '@wdio/config'
 import { DEFAULT_OPTS, DEFAULT_TIMEOUT } from './constants'
 
@@ -17,10 +18,9 @@ class CucumberAdapter {
     constructor (cid, config, specs, capabilities) {
         this.cwd = process.cwd()
         this.cid = cid
-        this.config = config
         this.specs = specs
         this.capabilities = capabilities
-
+        this.config = config
         this.cucumberOpts = Object.assign(DEFAULT_OPTS, config.cucumberOpts)
     }
 
