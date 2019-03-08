@@ -1,5 +1,5 @@
 import { Status } from 'cucumber'
-import { CucumberEventListener } from './cucumberEventListener'
+import { CucumberEventListener } from './CucumberEventListener'
 import { createStepArgument } from './utils'
 import * as path from 'path'
 
@@ -76,17 +76,17 @@ class CucumberReporter {
     handleAfterStep (uri, feature, scenario, step, result, sourceLocation) {
         let e = 'undefined'
         switch (result.status) {
-            case Status.FAILED:
-            case Status.UNDEFINED:
-                e = 'fail'
-                break
-            case Status.PASSED:
-                e = 'pass'
-                break
-            case Status.PENDING:
-            case Status.SKIPPED:
-            case Status.AMBIGUOUS:
-                e = 'pending'
+        case Status.FAILED:
+        case Status.UNDEFINED:
+            e = 'fail'
+            break
+        case Status.PASSED:
+            e = 'pass'
+            break
+        case Status.PENDING:
+        case Status.SKIPPED:
+        case Status.AMBIGUOUS:
+            e = 'pending'
         }
         let error = {}
         let stepTitle = step.text || step.keyword || 'Undefined Step'

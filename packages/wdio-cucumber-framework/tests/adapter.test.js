@@ -1,5 +1,8 @@
 import path from 'path'
 import CucumberAdapterFactory, { CucumberAdapter } from '../src'
+import { NOOP } from '../src/constants'
+
+process.send(NOOP)
 
 const wdioReporter = {
     write: jest.fn(),
@@ -34,34 +37,32 @@ describe('adapter',  () => {
             '0-2',
             conf,
             feature,
-            {},
-            wdioReporter)
-        await expect(result).toBe(0)
+            {})
+        expect(result).toBe(0)
     })
 
     describe('should use the compiler as defined in the options', () => {
 
         it('should not run when no compiler is defined', async () => {
-            expect(async () => await CucumberAdapterFactory.run(0, conf, feature, {})).toBe('blah')
+            await expect(CucumberAdapterFactory.run(0, conf, feature, {}))
+                .rejects.toThrow('foobar')
         })
 
         it('should run if the compiler is defined', async () => {
-            conf.cucumberOpts.compiler.push('js:babel-register')
+            conf.cucumberOpts.compiler.push('js:@babel/register')
 
-            const adapter = new CucumberAdapter(0, conf, feature, {})
-            const result = await adapter.run()
-            expect(result).toBe(101)
+            await expect(CucumberAdapterFactory.run(0, conf, feature, {}))
+                .resolves.toBe(0)
         })
     })
     describe('should use the required files as defined in the options', () => {
-        it('should allow globs in required files', () => {
-            conf.cucumberOpts.compiler.push('js:babel-register')
+        it('should allow globs in required files', async () => {
+            conf.cucumberOpts.compiler.push('js:@babel/register')
             conf.cucumberOpts.require = [path.join(__dirname, 'fixtures/es*-definition.js')]
 
-            const adapter = new CucumberAdapter(0, conf, feature, {})
-            return adapter.run().then((res) => {
-                expect(res).toEqual(0, 'test ok!')
-            })
+
+            await expect(CucumberAdapterFactory.run(0, conf, feature, {}))
+                .resolves.toBe(0)
         })
     })
 })

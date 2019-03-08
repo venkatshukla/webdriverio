@@ -1,7 +1,7 @@
 import { executeHooksWithArgs } from '@wdio/config'
-import { CucumberEventListener } from './cucumberEventListener'
+import { CucumberEventListener } from './CucumberEventListener'
 
-class HookRunner {
+class Hookrunner {
     gherkinDocEvents = []
 
     constructor (eventBroadcaster, config) {
@@ -41,4 +41,4 @@ class HookRunner {
     }
 }
 
-export default HookRunner
+export default Hookrunner

@@ -1,17 +1,16 @@
 import * as Cucumber from 'cucumber'
-import logger from '@wdio/logger'
 import mockery from 'mockery'
 import isGlob from 'is-glob'
 import glob from 'glob'
 import path from 'path'
 
-import CucumberReporter from './reporter'
-import HookRunner from './hookRunner'
+import CucumberReporter from './Reporter'
+import Hookrunner from './Hookrunner'
 import { EventEmitter } from 'events'
 
-const log = logger('@wdio/cucumber-framework')
-import { runTestInFiberContext, executeHooksWithArgs } from '@wdio/config'
-import { DEFAULT_OPTS, DEFAULT_TIMEOUT } from './constants'
+import { executeHooksWithArgs } from '@wdio/config'
+import { executeSync, executeAsync  } from '@wdio/sync'
+import { DEFAULT_OPTS, DEFAULT_TIMEOUT, NOOP } from './constants'
 
 
 class CucumberAdapter {
@@ -27,7 +26,9 @@ class CucumberAdapter {
     async run () {
         Cucumber.supportCodeLibraryBuilder.reset(this.cwd)
 
-        runTestInFiberContext(global.browser, this.config.beforeCommand, this.config.afterCommand)
+        //await executeHooksWithArgs(this.config.before, [this.capabilities, this.specs])
+
+        //await runTestInFiberContext(global.browser, this.config.beforeCommand, this.config.afterCommand)
 
         this.registerCompilers()
         this.loadSpecFiles()
@@ -37,7 +38,7 @@ class CucumberAdapter {
 
         const eventBroadcaster = new EventEmitter()
         // eslint-disable-next-line no-new
-        new HookRunner(eventBroadcaster, this.config)
+        new Hookrunner(eventBroadcaster, this.config)
 
         const reporterOptions = {
             capabilities: this.capabilities,
@@ -45,6 +46,7 @@ class CucumberAdapter {
             failAmbiguousDefinitions: Boolean(this.cucumberOpts.failAmbiguousDefinitions),
             tagsInTitle: Boolean(this.cucumberOpts.tagsInTitle)
         }
+
         const reporter = new CucumberReporter(eventBroadcaster, reporterOptions, this.cid, this.specs)
 
         const pickleFilter = new Cucumber.PickleFilter({
